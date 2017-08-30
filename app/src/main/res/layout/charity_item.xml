@@ -8,11 +8,15 @@
             name="charity"
             type="com.natthawut.tamboon.remote.Charity" />
 
+        <variable
+            name="clickListener"
+            type="com.natthawut.tamboon.ui.charities.OnClickListener&lt;com.natthawut.tamboon.remote.Charity&gt;" />
     </data>
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:onClick="@{() -> clickListener.onClick(charity)}">
 
         <ImageView
             android:id="@+id/charity_image"

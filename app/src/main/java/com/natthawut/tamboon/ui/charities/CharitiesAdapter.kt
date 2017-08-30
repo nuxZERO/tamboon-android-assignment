@@ -8,7 +8,8 @@ import com.natthawut.tamboon.R
 import com.natthawut.tamboon.databinding.CharityItemBinding
 import com.natthawut.tamboon.remote.Charity
 
-class CharitiesAdapter : RecyclerView.Adapter<CharitiesAdapter.CharityViewHolder>() {
+class CharitiesAdapter(val clickListener: OnClickListener<Charity>) : RecyclerView
+.Adapter<CharitiesAdapter.CharityViewHolder>() {
 
     var charities: List<Charity>? = null
         set(value) {
@@ -26,6 +27,8 @@ class CharitiesAdapter : RecyclerView.Adapter<CharitiesAdapter.CharityViewHolder
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): CharityViewHolder {
         val charityItemBinding = DataBindingUtil.inflate<CharityItemBinding>(
                 LayoutInflater.from(parent?.context), R.layout.charity_item, parent, false)
+
+        charityItemBinding.clickListener = clickListener
 
         return CharityViewHolder(charityItemBinding)
     }

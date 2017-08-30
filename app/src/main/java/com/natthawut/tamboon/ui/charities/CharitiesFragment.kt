@@ -8,12 +8,14 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.natthawut.tamboon.R
 import com.natthawut.tamboon.databinding.CharitiesFragmentBinding
 import com.natthawut.tamboon.injection.AppModules
+import com.natthawut.tamboon.remote.Charity
 
 /**
  * A simple [Fragment] subclass.
@@ -22,7 +24,14 @@ class CharitiesFragment : LifecycleFragment() {
 
     private lateinit var binding: CharitiesFragmentBinding
     private lateinit var viewModel: CharitiesViewModel
-    private val adapter = CharitiesAdapter()
+
+    private val clickListener = object : OnClickListener<Charity> {
+        override fun onClick(data: Charity) {
+            Log.d("charity", "${data.id}")
+        }
+    }
+
+    private val adapter = CharitiesAdapter(clickListener)
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
