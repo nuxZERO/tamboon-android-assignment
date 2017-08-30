@@ -2,10 +2,12 @@ package com.natthawut.tamboon.ui
 
 
 import android.arch.lifecycle.LifecycleFragment
+import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,11 +22,15 @@ class CharitiesFragment : LifecycleFragment() {
 
     private lateinit var binding: CharitiesFragmentBinding
     private lateinit var viewModel: CharitiesViewModel
+    private val adapter = CharitiesAdapter()
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.charities_fragment, container, false)
+        binding.charityList.layoutManager = GridLayoutManager(context, 1)
+        binding.charityList.adapter = adapter
+
         return binding.root
     }
 
@@ -35,13 +41,15 @@ class CharitiesFragment : LifecycleFragment() {
         viewModel = ViewModelProviders.of(this, factory)
                 .get(CharitiesViewModel::class.java)
 
-        viewModel.retriveCharities()
+        viewModel.retrieveCharities()
 
         subscribeUi()
     }
 
     private fun subscribeUi() {
-        // TODO()
+        viewModel.charitiesLiveData.observe(this, Observer { charities ->
+            adapter.charities = charities
+        })
     }
 
 }// Required empty public constructor

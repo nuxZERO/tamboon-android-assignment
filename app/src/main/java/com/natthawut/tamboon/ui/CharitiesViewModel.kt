@@ -5,12 +5,15 @@ import android.arch.lifecycle.ViewModel
 import com.natthawut.tamboon.remote.Charity
 import com.natthawut.tamboon.repository.TamboonRepository
 
-class CharitiesViewModel(val repository: TamboonRepository) : ViewModel() {
+class CharitiesViewModel(private val repository: TamboonRepository) : ViewModel() {
 
-    val charitiesLiveData  = MutableLiveData<List<Charity>>()
+    val charitiesLiveData = MutableLiveData<List<Charity>>()
 
-    fun retriveCharities() {
-        charitiesLiveData.value = arrayListOf(Charity(), Charity())
+    fun retrieveCharities() {
+        repository.getOrganizations().subscribe { charities ->
+            charitiesLiveData.value = charities
+        }
+
     }
 
 }
