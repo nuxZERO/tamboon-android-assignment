@@ -1,4 +1,4 @@
-package com.natthawut.tamboon.ui
+package com.natthawut.tamboon.ui.charities
 
 import android.arch.lifecycle.ViewModel
 import android.arch.lifecycle.ViewModelProvider

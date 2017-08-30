@@ -3,7 +3,7 @@ package com.natthawut.tamboon
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.Fragment
-import com.natthawut.tamboon.ui.CharitiesFragment
+import com.natthawut.tamboon.ui.charities.CharitiesFragment
 
 class MainActivity : AppCompatActivity() {
 
