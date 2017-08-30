@@ -1,7 +1,16 @@
 package com.natthawut.tamboon.ui
 
-/**
- * Created by Nux on 8/30/2017 AD.
- */
-class CharitiesViewModel {
+import android.arch.lifecycle.MutableLiveData
+import android.arch.lifecycle.ViewModel
+import com.natthawut.tamboon.remote.Charity
+import com.natthawut.tamboon.repository.TamboonRepository
+
+class CharitiesViewModel(val repository: TamboonRepository) : ViewModel() {
+
+    val charitiesLiveData  = MutableLiveData<List<Charity>>()
+
+    fun retriveCharities() {
+        charitiesLiveData.value = arrayListOf(Charity(), Charity())
+    }
+
 }
