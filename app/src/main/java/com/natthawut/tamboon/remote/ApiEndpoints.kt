@@ -6,6 +6,6 @@ import retrofit2.http.GET
 interface ApiEndpoints {
 
     @GET("/")
-    fun getOrganizations(): Observable<List<Organization>>
+    fun getOrganizations(): Observable<List<Charity>>
 
 }

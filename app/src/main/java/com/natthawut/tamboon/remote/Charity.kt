@@ -2,7 +2,7 @@ package com.natthawut.tamboon.remote
 
 import com.google.gson.annotations.SerializedName
 
-class Organization {
+class Charity {
 
     var id = 0
 

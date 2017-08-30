@@ -1,7 +1,7 @@
 package com.natthawut.tamboon
 
 import com.natthawut.tamboon.remote.ApiRemote
-import com.natthawut.tamboon.remote.Organization
+import com.natthawut.tamboon.remote.Charity
 import io.reactivex.observers.TestObserver
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -35,7 +35,7 @@ class ApiRemoteTest {
         mockWebServer.enqueue(mockResponse)
 
         // When - Retrieve organizations
-        val testObserver = TestObserver<List<Organization>>()
+        val testObserver = TestObserver<List<Charity>>()
         apiRemote.getOrganizations().subscribe(testObserver)
 
         // Then - Check request completed and result list count should equal 4
