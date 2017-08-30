@@ -1,8 +1,8 @@
 package com.natthawut.tamboon
 
-import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v7.app.AppCompatActivity
 import com.natthawut.tamboon.ui.charities.CharitiesFragment
 
 class MainActivity : AppCompatActivity() {
@@ -19,7 +19,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun initFragment(fragment: Fragment) {
         supportFragmentManager.beginTransaction()
-                .add(R.id.content_layout, fragment)
+                .replace(R.id.content_layout, fragment)
+                .commit()
+    }
+
+    fun addBackStackFragment(fragment: Fragment) {
+        supportFragmentManager.beginTransaction()
+                .replace(R.id.content_layout, fragment)
+                .addToBackStack("")
                 .commit()
     }
 

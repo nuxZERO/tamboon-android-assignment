@@ -4,4 +4,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="charity_banner_image">Charity banner image</string>
+    <string name="card_number">Card number</string>
+    <string name="amount">Amount (THB)</string>
+    <string name="donate">Donate</string>
 </resources>

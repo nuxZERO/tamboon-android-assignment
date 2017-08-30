@@ -8,14 +8,15 @@ import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.natthawut.tamboon.MainActivity
 import com.natthawut.tamboon.R
 import com.natthawut.tamboon.databinding.CharitiesFragmentBinding
 import com.natthawut.tamboon.injection.AppModules
 import com.natthawut.tamboon.remote.Charity
+import com.natthawut.tamboon.ui.donation.DonationFragment
 
 /**
  * A simple [Fragment] subclass.
@@ -27,7 +28,8 @@ class CharitiesFragment : LifecycleFragment() {
 
     private val clickListener = object : OnClickListener<Charity> {
         override fun onClick(data: Charity) {
-            Log.d("charity", "${data.id}")
+            val donationFragment = DonationFragment.newInstance(data.name!!)
+            ( activity as MainActivity).addBackStackFragment(donationFragment)
         }
     }
 
