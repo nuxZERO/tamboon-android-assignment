@@ -27,4 +27,8 @@ class ApiRemote(baseUrl: String) {
         return apiEndpoints.getOrganizations()
     }
 
+    fun donate(donation: Donation): Observable<DonationResponse> {
+        return apiEndpoints.donate(donation)
+    }
+
 }

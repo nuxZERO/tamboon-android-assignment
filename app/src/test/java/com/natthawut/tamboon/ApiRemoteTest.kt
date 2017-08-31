@@ -2,6 +2,8 @@ package com.natthawut.tamboon
 
 import com.natthawut.tamboon.remote.ApiRemote
 import com.natthawut.tamboon.remote.Charity
+import com.natthawut.tamboon.remote.Donation
+import com.natthawut.tamboon.remote.DonationResponse
 import io.reactivex.observers.TestObserver
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -44,4 +46,18 @@ class ApiRemoteTest {
         Assert.assertEquals(4, actualOrganizers.size)
     }
 
+    @Test
+    fun donate_complete() {
+        // Give
+        val mockResponse = MockResponse().setResponseCode(200)
+                .setBody("{\"success\": true\n}")
+        mockWebServer.enqueue(mockResponse)
+
+        // When
+        val testObserver = TestObserver<DonationResponse>()
+        apiRemote.donate(Donation()).subscribe(testObserver)
+
+        // Then
+        testObserver.assertComplete()
+    }
 }
