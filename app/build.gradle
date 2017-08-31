@@ -11,7 +11,7 @@ android {
     buildToolsVersion "26.0.1"
     defaultConfig {
         applicationId "com.natthawut.tamboon"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 26
         versionCode 1
         versionName "1.0"
@@ -88,4 +88,7 @@ dependencies {
 
     // Mocker web server
     testImplementation "com.squareup.okhttp3:mockwebserver:$mockwebserver_version"
+
+    // Omise SDK
+    implementation "co.omise:omise-android:$omise_version"
 }
