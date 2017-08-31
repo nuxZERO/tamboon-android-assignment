@@ -7,4 +7,7 @@
     <string name="card_number">Card number</string>
     <string name="amount">Amount (THB)</string>
     <string name="donate">Donate</string>
+    <string name="name_on_card">Name on card</string>
+    <string name="month">Month</string>
+    <string name="cvv">CVV</string>
 </resources>
