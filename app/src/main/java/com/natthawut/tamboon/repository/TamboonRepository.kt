@@ -20,29 +20,26 @@ open class TamboonRepository(val remote: ApiRemote, val client: Client) {
                 .observeOn(AndroidSchedulers.mainThread())
     }
 
-    fun donate(tokenRequest: TokenRequest, amount: Int): Observable<DonationResponse> {
+    fun donate(tokenRequest: TokenRequest, amount: Int, response: (result: DonationResponse) -> Unit) {
 
-        val tokenObservable = Observable.create<Token> { emitter ->
-
-            client.send(tokenRequest, object : TokenRequestListener {
-                override fun onTokenRequestSucceed(p0: TokenRequest?, p1: Token?) {
-                    emitter.onNext(p1!!)
-                    emitter.onComplete()
+        client.send(tokenRequest, object : TokenRequestListener {
+            override fun onTokenRequestSucceed(p0: TokenRequest?, token: Token?) {
+                if (token != null) {
+                    val donation = Donation()
+                    donation.name = tokenRequest.name
+                    donation.token = token.id
+                    donation.amount = amount
+                    remote.donate(donation)
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread())
+                            .subscribe { result -> response(result)}
                 }
+            }
 
-                override fun onTokenRequestFailed(p0: TokenRequest?, p1: Throwable?) {
-                    emitter.onError(p1!!)
-                }
-            })
-        }
+            override fun onTokenRequestFailed(p0: TokenRequest?, p1: Throwable?) {
 
-        return tokenObservable.flatMap { token ->
-            val donation = Donation()
-            donation.name = tokenRequest.name
-            donation.token = token.id
-            donation.amount = amount
-            remote.donate(donation)
-        }
+            }
+        })
     }
 
 }

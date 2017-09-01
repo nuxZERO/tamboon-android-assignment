@@ -7,7 +7,7 @@ import android.content.Context
 import android.databinding.DataBindingUtil
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
+import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -38,23 +38,24 @@ class DonationFragment : LifecycleFragment() {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.donation_fragment, container, false)
 
+        // TODO: Delete hard code
         binding.cardNumberInput.setText("4242424242424242")
         binding.nameOnCardInput.setText("JOHN DOE")
         binding.expireMonthInput.setText("12")
-        binding.expireYearInput.setText("2020")
+        binding.expireYearInput.setText("20")
         binding.securityCodeInput.setText("123")
         binding.amountInput.setText("10000")
 
         binding.donateClickListener = object : DonateClickListener {
             override fun onClick() {
                 val tokenRequest = TokenRequest()
-                tokenRequest.name = "JOHN DOE"
-                tokenRequest.number = "4242424242424242"
-                tokenRequest.expirationMonth = 12
-                tokenRequest.expirationYear = 2020
-                tokenRequest.securityCode = "123"
+                tokenRequest.name = binding.nameOnCardInput.text.toString()
+                tokenRequest.number = binding.cardNumberInput.text.toString()
+                tokenRequest.expirationMonth = binding.expireMonthInput.text.toString().toInt()
+                tokenRequest.expirationYear = 2000 + binding.expireYearInput.text.toString().toInt()
+                tokenRequest.securityCode = binding.securityCodeInput.text.toString()
 
-                val amount = 10000
+                val amount = binding.amountInput.text.toString().toInt()
                 viewModel?.donate(tokenRequest, amount)
             }
         }
@@ -76,8 +77,15 @@ class DonationFragment : LifecycleFragment() {
     private fun subscribeUi() {
         viewModel?.donateResponseLiveData?.observe(this, Observer { result ->
             Toast.makeText(context, "${result?.success}", Toast.LENGTH_SHORT).show()
-//            Log.d("reuslt","${result?.success}")
+            showDonateCompletedDialog()
         })
+    }
+
+    private fun showDonateCompletedDialog() {
+        AlertDialog.Builder(context)
+                .setMessage(R.string.donate_completed)
+                .setPositiveButton(R.string.back_to_charities_list, null)
+                .show()
     }
 
     fun onButtonPressed(uri: Uri) {
