@@ -11,11 +11,12 @@ import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import co.omise.android.TokenRequest
+import com.natthawut.tamboon.MainActivity
 import com.natthawut.tamboon.R
 import com.natthawut.tamboon.databinding.DonationFragmentBinding
 import com.natthawut.tamboon.injection.AppModules
+import com.natthawut.tamboon.ui.success.SuccessFragment
 
 class DonationFragment : LifecycleFragment() {
 
@@ -39,12 +40,12 @@ class DonationFragment : LifecycleFragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.donation_fragment, container, false)
 
         // TODO: Delete hard code
-//        binding.cardNumberInput.setText("4242424242424242")
-//        binding.nameOnCardInput.setText("JOHN DOE")
-//        binding.expireMonthInput.setText("12")
-//        binding.expireYearInput.setText("20")
-//        binding.securityCodeInput.setText("123")
-//        binding.amountInput.setText("10000")
+        binding.cardNumberInput.setText("4242424242424242")
+        binding.nameOnCardInput.setText("JOHN DOE")
+        binding.expireMonthInput.setText("12")
+        binding.expireYearInput.setText("20")
+        binding.securityCodeInput.setText("123")
+        binding.amountInput.setText("10000")
 
         binding.donateClickListener = object : DonateClickListener {
             override fun onClick() {
@@ -81,10 +82,10 @@ class DonationFragment : LifecycleFragment() {
 
     private fun subscribeUi() {
         viewModel?.donateResponseLiveData?.observe(this, Observer { result ->
-            Toast.makeText(context, "${result?.success}", Toast.LENGTH_SHORT).show()
-
             binding.isProcessing = false
             showDonateCompletedDialog()
+            val successFragment = SuccessFragment.newInstance("", "")
+            (activity as MainActivity).addBackStackFragment(successFragment, "Success")
         })
     }
 

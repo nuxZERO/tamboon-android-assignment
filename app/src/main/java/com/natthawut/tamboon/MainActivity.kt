@@ -23,10 +23,10 @@ class MainActivity : AppCompatActivity() {
                 .commit()
     }
 
-    fun addBackStackFragment(fragment: Fragment) {
+    fun addBackStackFragment(fragment: Fragment, fragmentName: String) {
         supportFragmentManager.beginTransaction()
                 .replace(R.id.content_layout, fragment)
-                .addToBackStack("")
+                .addToBackStack(fragmentName)
                 .commit()
     }
 

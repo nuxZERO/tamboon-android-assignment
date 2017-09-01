@@ -29,7 +29,7 @@ class CharitiesFragment : LifecycleFragment() {
     private val clickListener = object : OnClickListener<Charity> {
         override fun onClick(data: Charity) {
             val donationFragment = DonationFragment.newInstance(data.name!!)
-            ( activity as MainActivity).addBackStackFragment(donationFragment)
+            (activity as MainActivity).addBackStackFragment(donationFragment, "Donation")
         }
     }
 

@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil
 import android.net.Uri
 import android.os.Bundle
 import android.support.v4.app.Fragment
+import android.support.v4.app.FragmentManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -32,7 +33,7 @@ class SuccessFragment : Fragment() {
 
     val successClickListener = object: SuccessClickListener{
         override fun onClick() {
-            TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+            fragmentManager.popBackStack("Donation", FragmentManager.POP_BACK_STACK_INCLUSIVE)
         }
     }
 
