@@ -39,12 +39,12 @@ class DonationFragment : LifecycleFragment() {
         binding = DataBindingUtil.inflate(inflater, R.layout.donation_fragment, container, false)
 
         // TODO: Delete hard code
-        binding.cardNumberInput.setText("4242424242424242")
-        binding.nameOnCardInput.setText("JOHN DOE")
-        binding.expireMonthInput.setText("12")
-        binding.expireYearInput.setText("20")
-        binding.securityCodeInput.setText("123")
-        binding.amountInput.setText("10000")
+//        binding.cardNumberInput.setText("4242424242424242")
+//        binding.nameOnCardInput.setText("JOHN DOE")
+//        binding.expireMonthInput.setText("12")
+//        binding.expireYearInput.setText("20")
+//        binding.securityCodeInput.setText("123")
+//        binding.amountInput.setText("10000")
 
         binding.donateClickListener = object : DonateClickListener {
             override fun onClick() {
@@ -57,8 +57,13 @@ class DonationFragment : LifecycleFragment() {
 
                 val amount = binding.amountInput.text.toString().toInt()
                 viewModel?.donate(tokenRequest, amount)
+
+                binding.isProcessing = true
+
             }
         }
+
+        binding.isProcessing = false
 
         return binding.root
     }
@@ -77,6 +82,8 @@ class DonationFragment : LifecycleFragment() {
     private fun subscribeUi() {
         viewModel?.donateResponseLiveData?.observe(this, Observer { result ->
             Toast.makeText(context, "${result?.success}", Toast.LENGTH_SHORT).show()
+
+            binding.isProcessing = false
             showDonateCompletedDialog()
         })
     }

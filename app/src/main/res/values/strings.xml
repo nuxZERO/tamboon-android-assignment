@@ -13,4 +13,5 @@
     <string name="year">Year</string>
     <string name="donate_completed">Donate completed.</string>
     <string name="back_to_charities_list">Back to charities page</string>
+    <string name="donating">Donating...</string>
 </resources>
