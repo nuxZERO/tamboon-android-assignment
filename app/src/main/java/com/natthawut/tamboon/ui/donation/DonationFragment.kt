@@ -1,30 +1,28 @@
 package com.natthawut.tamboon.ui.donation
 
+import android.arch.lifecycle.LifecycleFragment
+import android.arch.lifecycle.Observer
+import android.arch.lifecycle.ViewModelProviders
 import android.content.Context
 import android.databinding.DataBindingUtil
 import android.net.Uri
 import android.os.Bundle
-import android.support.v4.app.Fragment
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-
+import android.widget.Toast
+import co.omise.android.TokenRequest
 import com.natthawut.tamboon.R
 import com.natthawut.tamboon.databinding.DonationFragmentBinding
+import com.natthawut.tamboon.injection.AppModules
 
-/**
- * A simple [Fragment] subclass.
- * Activities that contain this fragment must implement the
- * [DonationFragment.OnFragmentInteractionListener] interface
- * to handle interaction events.
- * Use the [DonationFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class DonationFragment : Fragment() {
+class DonationFragment : LifecycleFragment() {
 
-    // TODO: Rename and change types of parameters
     private var charityName: String? = null
     private lateinit var binding: DonationFragmentBinding
+
+    private var viewModel: DonationViewModel? = null
 
     private var mListener: OnFragmentInteractionListener? = null
 
@@ -38,8 +36,28 @@ class DonationFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
-//        return inflater!!.inflate(R.layout.donation_fragment, container, false)
         binding = DataBindingUtil.inflate(inflater, R.layout.donation_fragment, container, false)
+
+        binding.cardNumberInput.setText("4242424242424242")
+        binding.nameOnCardInput.setText("JOHN DOE")
+        binding.expireMonthInput.setText("12")
+        binding.expireYearInput.setText("2020")
+        binding.securityCodeInput.setText("123")
+        binding.amountInput.setText("10000")
+
+        binding.donateClickListener = object : DonateClickListener {
+            override fun onClick() {
+                val tokenRequest = TokenRequest()
+                tokenRequest.name = "JOHN DOE"
+                tokenRequest.number = "4242424242424242"
+                tokenRequest.expirationMonth = 12
+                tokenRequest.expirationYear = 2020
+                tokenRequest.securityCode = "123"
+
+                val amount = 10000
+                viewModel?.donate(tokenRequest, amount)
+            }
+        }
 
         return binding.root
     }
@@ -47,9 +65,21 @@ class DonationFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         binding.charityName = charityName
+
+        val factory = DonationViewModelFactory(AppModules.provideRepository())
+        viewModel = ViewModelProviders.of(this, factory)
+                .get(DonationViewModel::class.java)
+
+        subscribeUi()
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
+    private fun subscribeUi() {
+        viewModel?.donateResponseLiveData?.observe(this, Observer { result ->
+            Toast.makeText(context, "${result?.success}", Toast.LENGTH_SHORT).show()
+//            Log.d("reuslt","${result?.success}")
+        })
+    }
+
     fun onButtonPressed(uri: Uri) {
         if (mListener != null) {
             mListener!!.onFragmentInteraction(uri)
@@ -70,33 +100,15 @@ class DonationFragment : Fragment() {
         mListener = null
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     *
-     *
-     * See the Android Training lesson [Communicating with Other Fragments](http://developer.android.com/training/basics/fragments/communicating.html) for more information.
-     */
     interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         fun onFragmentInteraction(uri: Uri)
     }
 
     companion object {
-        // TODO: Rename parameter arguments, choose names that match
-        // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
+
         private val ARG_CHARITY_NAME = "charity_name"
 
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param charityName Parameter 1.
-         * @return A new instance of fragment DonationFragment.
-         */
-        // TODO: Rename and change types and number of parameters
         fun newInstance(charityName: String): DonationFragment {
             val fragment = DonationFragment()
             val args = Bundle()
