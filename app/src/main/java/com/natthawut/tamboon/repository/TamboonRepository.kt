@@ -14,8 +14,8 @@ import io.reactivex.schedulers.Schedulers
 
 open class TamboonRepository(val remote: ApiRemote, val client: Client) {
 
-    fun getOrganizations(): Observable<List<Charity>> {
-        return remote.getOrganizations()
+    fun getCharities(): Observable<List<Charity>> {
+        return remote.getCharities()
     }
 
     /**

@@ -23,8 +23,8 @@ open class ApiRemote(baseUrl: String) {
         apiEndpoints = retrofit.create(ApiEndpoints::class.java)
     }
 
-    fun getOrganizations(): Observable<List<Charity>> {
-        return apiEndpoints.getOrganizations()
+    fun getCharities(): Observable<List<Charity>> {
+        return apiEndpoints.getCharities()
     }
 
     fun donate(donation: Donation): Observable<DonationResponse> {

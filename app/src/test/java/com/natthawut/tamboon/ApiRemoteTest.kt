@@ -25,8 +25,8 @@ class ApiRemoteTest {
     }
 
     @Test
-    fun getOrganizations_complete() {
-        // Give - Create mock organizations response
+    fun getCharities_complete() {
+        // Give - Create mock charities response
         val mockResponse = MockResponse().setResponseCode(200)
                 .setBody(" [\n" +
                         "     { \"id\": 0, \"name\": \"Ban Khru Noi\", \"logo_url\": \"http://rkdretailiq.com/news/img-corporate-baankrunoi.jpg\" },\n" +
@@ -36,14 +36,14 @@ class ApiRemoteTest {
                         "   ]")
         mockWebServer.enqueue(mockResponse)
 
-        // When - Retrieve organizations
+        // When - Retrieve charities
         val testObserver = TestObserver<List<Charity>>()
-        apiRemote.getOrganizations().subscribe(testObserver)
+        apiRemote.getCharities().subscribe(testObserver)
 
         // Then - Check request completed and result list count should equal 4
         testObserver.assertComplete()
-        val actualOrganizers = testObserver.values()[0]
-        Assert.assertEquals(4, actualOrganizers.size)
+        val actualCharities = testObserver.values()[0]
+        Assert.assertEquals(4, actualCharities.size)
     }
 
     @Test

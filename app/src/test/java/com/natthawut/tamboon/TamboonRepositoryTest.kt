@@ -24,10 +24,10 @@ class TamboonRepositoryTest {
     fun getCharities() {
         // Give
         val charities = arrayListOf(Charity(), Charity(), Charity())
-        Mockito.`when`(remote.getOrganizations()).thenReturn(Observable.just(charities))
+        Mockito.`when`(remote.getCharities()).thenReturn(Observable.just(charities))
 
         // When
-        val testObservable = repository.getOrganizations().test()
+        val testObservable = repository.getCharities().test()
         testObservable.awaitTerminalEvent()
 
         // Then

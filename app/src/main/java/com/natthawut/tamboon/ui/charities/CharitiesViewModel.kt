@@ -13,7 +13,7 @@ class CharitiesViewModel(private val repository: TamboonRepository) : ViewModel(
     val errorMessageLiveData = MutableLiveData<String>()
 
     fun retrieveCharities() {
-        repository.getOrganizations()
+        repository.getCharities()
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(

@@ -8,7 +8,7 @@ import retrofit2.http.POST
 interface ApiEndpoints {
 
     @GET("/")
-    fun getOrganizations(): Observable<List<Charity>>
+    fun getCharities(): Observable<List<Charity>>
 
     @POST("/donate")
     fun donate(@Body donation: Donation): Observable<DonationResponse>
