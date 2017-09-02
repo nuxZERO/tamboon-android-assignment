@@ -9,6 +9,7 @@ import com.natthawut.tamboon.repository.TamboonRepository
 class DonationViewModel(val repository: TamboonRepository) : ViewModel() {
 
     val donateResponseLiveData = MutableLiveData<DonationResponse>()
+    val errorMessageLiveData = MutableLiveData<String>()
 
     fun donate(tokenRequest: TokenRequest, amount: Int) {
         repository.donate(tokenRequest, amount, { result -> donateResponseLiveData.value = result })

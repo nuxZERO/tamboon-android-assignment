@@ -7,10 +7,10 @@ import android.content.Context
 import android.databinding.DataBindingUtil
 import android.net.Uri
 import android.os.Bundle
-import android.support.v7.app.AlertDialog
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import co.omise.android.TokenRequest
 import com.natthawut.tamboon.MainActivity
 import com.natthawut.tamboon.R
@@ -81,19 +81,18 @@ class DonationFragment : LifecycleFragment() {
     }
 
     private fun subscribeUi() {
-        viewModel?.donateResponseLiveData?.observe(this, Observer { result ->
+        viewModel?.donateResponseLiveData?.observe(this, Observer { _ ->
             binding.isProcessing = false
-            showDonateCompletedDialog()
+            // Show success fragment
             val successFragment = SuccessFragment.newInstance("", "")
             (activity as MainActivity).addBackStackFragment(successFragment, "Success")
         })
-    }
 
-    private fun showDonateCompletedDialog() {
-        AlertDialog.Builder(context)
-                .setMessage(R.string.donate_completed)
-                .setPositiveButton(R.string.back_to_charities_list, null)
-                .show()
+        viewModel?.errorMessageLiveData?.observe(this, Observer { errorMessage ->
+            binding.isProcessing = false
+            // Show error message
+            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+        })
     }
 
     fun onButtonPressed(uri: Uri) {

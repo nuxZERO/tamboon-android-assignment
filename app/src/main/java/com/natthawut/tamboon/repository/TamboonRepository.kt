@@ -16,8 +16,35 @@ open class TamboonRepository(val remote: ApiRemote, val client: Client) {
 
     fun getOrganizations(): Observable<List<Charity>> {
         return remote.getOrganizations()
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
+    }
+
+    /**
+     * It not working yet. This Observable wrap send request Omise token.
+     * Then use token to donate endpoint.
+     * */
+    fun donate(tokenRequest: TokenRequest, amount: Int): Observable<DonationResponse> {
+        return Observable.create<Token> { emitter ->
+            client.send(tokenRequest, object : TokenRequestListener {
+                override fun onTokenRequestSucceed(request: TokenRequest?, token: Token?) {
+                    if (token != null) {
+                        emitter.onNext(token)
+                        emitter.onComplete()
+                    } else {
+                        emitter.onError(NullPointerException("Token was null."))
+                    }
+                }
+
+                override fun onTokenRequestFailed(request: TokenRequest?, throwable: Throwable?) {
+                    emitter.onError(throwable!!)
+                }
+            })
+        }.flatMap { token ->
+            val donation = Donation()
+            donation.name = tokenRequest.name
+            donation.token = token.id
+            donation.amount = amount
+            remote.donate(donation)
+        }
     }
 
     fun donate(tokenRequest: TokenRequest, amount: Int, response: (result: DonationResponse) -> Unit) {
@@ -29,10 +56,11 @@ open class TamboonRepository(val remote: ApiRemote, val client: Client) {
                     donation.name = tokenRequest.name
                     donation.token = token.id
                     donation.amount = amount
+
                     remote.donate(donation)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe { result -> response(result)}
+                            .subscribe { result -> response(result) }
                 }
             }
 
