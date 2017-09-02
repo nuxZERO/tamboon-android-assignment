@@ -47,10 +47,10 @@ open class TamboonRepository(val remote: ApiRemote, val client: Client) {
         }
     }
 
-    fun donate(tokenRequest: TokenRequest, amount: Int, response: (result: DonationResponse) -> Unit) {
+    fun donate(tokenRequest: TokenRequest, amount: Int, response: (result: DonationResponse?, error: Throwable?) -> Unit) {
 
         client.send(tokenRequest, object : TokenRequestListener {
-            override fun onTokenRequestSucceed(p0: TokenRequest?, token: Token?) {
+            override fun onTokenRequestSucceed(request: TokenRequest?, token: Token?) {
                 if (token != null) {
                     val donation = Donation()
                     donation.name = tokenRequest.name
@@ -60,12 +60,13 @@ open class TamboonRepository(val remote: ApiRemote, val client: Client) {
                     remote.donate(donation)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe { result -> response(result) }
+                            .subscribe({ result -> response(result, null) },
+                                    { error -> response(null, error) })
                 }
             }
 
-            override fun onTokenRequestFailed(p0: TokenRequest?, p1: Throwable?) {
-
+            override fun onTokenRequestFailed(request: TokenRequest?, error: Throwable?) {
+                response(null, error)
             }
         })
     }
