@@ -3,11 +3,13 @@ package com.natthawut.tamboon.ui.donation
 import android.arch.lifecycle.LifecycleFragment
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
+import android.content.Context
 import android.databinding.DataBindingUtil
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import co.omise.android.TokenRequest
 import com.natthawut.tamboon.MainActivity
@@ -58,16 +60,24 @@ class DonationFragment : LifecycleFragment() {
 
         binding.donateClickListener = object : DonateClickListener {
             override fun onClick() {
+
+                if (!checkInputValidation()) {
+                    return
+                }
+
+                // Get data from inputs
                 val tokenRequest = TokenRequest()
                 tokenRequest.name = binding.nameOnCardInput.text.toString()
                 tokenRequest.number = binding.cardNumberInput.text.toString()
                 tokenRequest.expirationMonth = binding.expireMonthInput.text.toString().toInt()
                 tokenRequest.expirationYear = 2000 + binding.expireYearInput.text.toString().toInt()
                 tokenRequest.securityCode = binding.securityCodeInput.text.toString()
-
                 val amount = binding.amountInput.text.toString().toInt()
+
+                // Send request to donate endpoint
                 viewModel?.donate(tokenRequest, amount)
 
+                // Show progrss bar
                 binding.isProcessing = true
 
             }
@@ -90,17 +100,41 @@ class DonationFragment : LifecycleFragment() {
     }
 
     private fun subscribeUi() {
-        viewModel?.donateResponseLiveData?.observe(this, Observer { _ ->
+        viewModel?.donateResponseLiveData?.observe(this, Observer { response ->
             binding.isProcessing = false
-            // Show success fragment
-            (activity as MainActivity).addBackStackFragment(SuccessFragment(), "Success")
+            if (response != null && response.success) {
+                // Show success fragment
+                (activity as MainActivity).addBackStackFragment(SuccessFragment(), "Success")
+            }
         })
 
         viewModel?.errorMessageLiveData?.observe(this, Observer { errorMessage ->
             binding.isProcessing = false
-            // Show error message
-            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+            if (errorMessage != null) {
+                // Show error message
+                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+            }
         })
+    }
+
+    private fun checkInputValidation(): Boolean {
+        mapOf(
+                binding.nameOnCardInput to binding.nameOnCardInputLayout,
+                binding.cardNumberInput to binding.cardNumberInputLayout,
+                binding.expireMonthInput to binding.expireMonthInputLayout,
+                binding.expireYearInput to binding.expireYearInputLayout,
+                binding.securityCodeInput to binding.securityCodeInputLayout,
+                binding.amountInput to binding.amountInputLayout
+        ).forEach { (k, v) ->
+            if (k.text.toString().isEmpty()) {
+                v.error = getString(R.string.required_input)
+                return false
+            } else {
+                v.error = null
+            }
+        }
+
+        return true
     }
 
 }

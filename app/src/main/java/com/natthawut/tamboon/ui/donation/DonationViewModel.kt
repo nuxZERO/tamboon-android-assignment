@@ -12,7 +12,16 @@ class DonationViewModel(val repository: TamboonRepository) : ViewModel() {
     val errorMessageLiveData = MutableLiveData<String>()
 
     fun donate(tokenRequest: TokenRequest, amount: Int) {
-        repository.donate(tokenRequest, amount, { result -> donateResponseLiveData.value = result })
+        repository.donate(tokenRequest, amount, { result, error ->
+            if (result != null) {
+                donateResponseLiveData.value = result
+                errorMessageLiveData.value = null
+            } else {
+                error?.printStackTrace()
+                donateResponseLiveData.value = null
+                errorMessageLiveData.value = error?.message
+            }
+        })
     }
 
 }
