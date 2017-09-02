@@ -3,9 +3,7 @@ package com.natthawut.tamboon.ui.donation
 import android.arch.lifecycle.LifecycleFragment
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Context
 import android.databinding.DataBindingUtil
-import android.net.Uri
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -25,7 +23,18 @@ class DonationFragment : LifecycleFragment() {
 
     private var viewModel: DonationViewModel? = null
 
-    private var mListener: OnFragmentInteractionListener? = null
+    companion object {
+
+        private val ARG_CHARITY_NAME = "charity_name"
+
+        fun newInstance(charityName: String): DonationFragment {
+            val fragment = DonationFragment()
+            val args = Bundle()
+            args.putString(ARG_CHARITY_NAME, charityName)
+            fragment.arguments = args
+            return fragment
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -95,41 +104,4 @@ class DonationFragment : LifecycleFragment() {
         })
     }
 
-    fun onButtonPressed(uri: Uri) {
-        if (mListener != null) {
-            mListener!!.onFragmentInteraction(uri)
-        }
-    }
-
-    override fun onAttach(context: Context?) {
-        super.onAttach(context)
-        if (context is OnFragmentInteractionListener) {
-            mListener = context
-        } else {
-//            throw RuntimeException(context!!.toString() + " must implement OnFragmentInteractionListener")
-        }
-    }
-
-    override fun onDetach() {
-        super.onDetach()
-        mListener = null
-    }
-
-    interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        fun onFragmentInteraction(uri: Uri)
-    }
-
-    companion object {
-
-        private val ARG_CHARITY_NAME = "charity_name"
-
-        fun newInstance(charityName: String): DonationFragment {
-            val fragment = DonationFragment()
-            val args = Bundle()
-            args.putString(ARG_CHARITY_NAME, charityName)
-            fragment.arguments = args
-            return fragment
-        }
-    }
-}// Required empty public constructor
+}
