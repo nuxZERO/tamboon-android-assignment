@@ -4,6 +4,8 @@ import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
 import com.natthawut.tamboon.remote.Charity
 import com.natthawut.tamboon.repository.TamboonRepository
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.schedulers.Schedulers
 
 class CharitiesViewModel(private val repository: TamboonRepository) : ViewModel() {
 
@@ -11,9 +13,12 @@ class CharitiesViewModel(private val repository: TamboonRepository) : ViewModel(
     val errorMessageLiveData = MutableLiveData<String>()
 
     fun retrieveCharities() {
-        repository.getOrganizations().subscribe(
-                { charities -> charitiesLiveData.value = charities },
-                { error -> errorMessageLiveData.value = error.message })
+        repository.getOrganizations()
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(
+                        { charities -> charitiesLiveData.value = charities },
+                        { error -> errorMessageLiveData.value = error.message })
 
     }
 
