@@ -8,11 +8,12 @@ import com.natthawut.tamboon.repository.TamboonRepository
 class CharitiesViewModel(private val repository: TamboonRepository) : ViewModel() {
 
     val charitiesLiveData = MutableLiveData<List<Charity>>()
+    val errorMessageLiveData = MutableLiveData<String>()
 
     fun retrieveCharities() {
-        repository.getOrganizations().subscribe { charities ->
-            charitiesLiveData.value = charities
-        }
+        repository.getOrganizations().subscribe(
+                { charities -> charitiesLiveData.value = charities },
+                { error -> errorMessageLiveData.value = error.message })
 
     }
 

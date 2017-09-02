@@ -11,6 +11,7 @@ import android.support.v7.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.natthawut.tamboon.MainActivity
 import com.natthawut.tamboon.R
 import com.natthawut.tamboon.databinding.CharitiesFragmentBinding
@@ -39,8 +40,7 @@ class CharitiesFragment : LifecycleFragment() {
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.charities_fragment, container, false)
-        binding.charityList.layoutManager = GridLayoutManager(context, resources.getInteger(R
-                .integer.charities_column))
+        binding.charityList.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.charities_column))
         binding.charityList.adapter = adapter
 
         return binding.root
@@ -66,6 +66,10 @@ class CharitiesFragment : LifecycleFragment() {
         viewModel.charitiesLiveData.observe(this, Observer { charities ->
             adapter.charities = charities
             binding.isShowProgressBar = false
+        })
+
+        viewModel.errorMessageLiveData.observe(this, Observer { errorMessage ->
+            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
         })
     }
 
