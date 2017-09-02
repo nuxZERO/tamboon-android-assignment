@@ -39,7 +39,8 @@ class CharitiesFragment : LifecycleFragment() {
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.charities_fragment, container, false)
-        binding.charityList.layoutManager = GridLayoutManager(context, 1)
+        binding.charityList.layoutManager = GridLayoutManager(context, resources.getInteger(R
+                .integer.charities_column))
         binding.charityList.adapter = adapter
 
         return binding.root
