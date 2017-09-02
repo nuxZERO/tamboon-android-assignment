@@ -69,6 +69,7 @@ class CharitiesFragment : LifecycleFragment() {
         })
 
         viewModel.errorMessageLiveData.observe(this, Observer { errorMessage ->
+            binding.isShowProgressBar = false
             Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
         })
     }
