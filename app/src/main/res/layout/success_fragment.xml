@@ -18,13 +18,25 @@
         <TextView
             android:id="@+id/success_message_text"
             style="@style/TextAppearance.AppCompat.Display1"
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/success"
+            android:text="@string/donate_success"
             android:textAlignment="center"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.25" />
+
+        <TextView
+            android:id="@+id/thank_you_message_text"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:text="@string/thank_you_for_donate"
+            android:textAlignment="center"
+            app:layout_constraintTop_toBottomOf="@id/success_message_text" />
 
         <Button
             android:id="@+id/dismiss_button"
@@ -32,8 +44,9 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="24dp"
             android:onClick="@{() -> successClickListener.onClick()}"
-            android:text="@string/thank_you"
-            app:layout_constraintTop_toBottomOf="@id/success_message_text" />
+            android:text="@string/back_to_charities_page"
+            app:layout_constraintTop_toBottomOf="@id/thank_you_message_text" />
+
     </android.support.constraint.ConstraintLayout>
 
 </layout>

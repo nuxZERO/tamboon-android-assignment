@@ -93,8 +93,7 @@ class DonationFragment : LifecycleFragment() {
         viewModel?.donateResponseLiveData?.observe(this, Observer { _ ->
             binding.isProcessing = false
             // Show success fragment
-            val successFragment = SuccessFragment.newInstance("", "")
-            (activity as MainActivity).addBackStackFragment(successFragment, "Success")
+            (activity as MainActivity).addBackStackFragment(SuccessFragment(), "Success")
         })
 
         viewModel?.errorMessageLiveData?.observe(this, Observer { errorMessage ->

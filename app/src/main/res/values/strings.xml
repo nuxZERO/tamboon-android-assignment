@@ -16,4 +16,7 @@
     <string name="donating">Donating...</string>
     <string name="thank_you">Thank you</string>
     <string name="success">Success</string>
+    <string name="back_to_charities_page">Back to charities page</string>
+    <string name="thank_you_for_donate">Thank you for donate</string>
+    <string name="donate_success">Donate Success</string>
 </resources>
