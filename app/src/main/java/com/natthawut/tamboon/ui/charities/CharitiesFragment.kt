@@ -54,12 +54,17 @@ class CharitiesFragment : LifecycleFragment() {
 
         viewModel.retrieveCharities()
 
+        if (adapter.charities == null) {
+            binding.isShowProgressBar = true
+        }
+
         subscribeUi()
     }
 
     private fun subscribeUi() {
         viewModel.charitiesLiveData.observe(this, Observer { charities ->
             adapter.charities = charities
+            binding.isShowProgressBar = false
         })
     }
 
