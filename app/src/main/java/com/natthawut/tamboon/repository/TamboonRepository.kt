@@ -50,14 +50,18 @@ open class TamboonRepository(val remote: ApiRemote, val client: Client) {
     fun donate(tokenRequest: TokenRequest, amount: Int, response: (result: DonationResponse?,
                                                                    errorMessage: String?) -> Unit) {
 
+        // Retrieve token from card info.
         client.send(tokenRequest, object : TokenRequestListener {
             override fun onTokenRequestSucceed(request: TokenRequest?, token: Token?) {
                 if (token != null) {
+
+                    // Create donate body request
                     val donation = Donation()
                     donation.name = tokenRequest.name
                     donation.token = token.id
                     donation.amount = amount
 
+                    // Call donate endpoint
                     remote.donate(donation)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
@@ -71,8 +75,8 @@ open class TamboonRepository(val remote: ApiRemote, val client: Client) {
                                 }
 
                             })
-//                            .subscribe({ result -> response(result, null) },
-//                                    { error -> response(null, error) })
+                } else {
+                    response(null, "Token was null.")
                 }
             }
 
