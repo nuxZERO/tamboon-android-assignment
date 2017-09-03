@@ -47,7 +47,8 @@ open class TamboonRepository(val remote: ApiRemote, val client: Client) {
         }
     }
 
-    fun donate(tokenRequest: TokenRequest, amount: Int, response: (result: DonationResponse?, error: Throwable?) -> Unit) {
+    fun donate(tokenRequest: TokenRequest, amount: Int, response: (result: DonationResponse?,
+                                                                   errorMessage: String?) -> Unit) {
 
         client.send(tokenRequest, object : TokenRequestListener {
             override fun onTokenRequestSucceed(request: TokenRequest?, token: Token?) {
@@ -60,13 +61,23 @@ open class TamboonRepository(val remote: ApiRemote, val client: Client) {
                     remote.donate(donation)
                             .subscribeOn(Schedulers.io())
                             .observeOn(AndroidSchedulers.mainThread())
-                            .subscribe({ result -> response(result, null) },
-                                    { error -> response(null, error) })
+                            .subscribeWith(object : WrapperObserver<DonationResponse>() {
+                                override fun success(t: DonationResponse) {
+                                    response(t, null)
+                                }
+
+                                override fun failure(errorMessage: String?) {
+                                    response(null, errorMessage)
+                                }
+
+                            })
+//                            .subscribe({ result -> response(result, null) },
+//                                    { error -> response(null, error) })
                 }
             }
 
             override fun onTokenRequestFailed(request: TokenRequest?, error: Throwable?) {
-                response(null, error)
+                response(null, error?.message?.capitalize()?.trim())
             }
         })
     }
