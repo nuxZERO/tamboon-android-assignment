@@ -6,6 +6,8 @@ apply plugin: 'kotlin-android-extensions'
 
 apply plugin: 'kotlin-kapt'
 
+apply plugin: 'io.fabric'
+
 android {
     compileSdkVersion 26
     buildToolsVersion "26.0.1"
@@ -17,10 +19,26 @@ android {
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
     }
-    buildTypes {
+    signingConfigs {
         release {
+            keyAlias 'TamboonApp'
+            keyPassword 'TamboonApp1234'
+            storeFile file('/Users/Nux/Desktop/tamboon-android-assignment/tamboon-keystore.jks')
+            storePassword 'TamboonApp1234'
+        }
+    }
+    buildTypes {
+        debug {
+            useProguard false
             minifyEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
+        }
+        release {
+            useProguard true
+            minifyEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.release
         }
     }
     compileOptions {
@@ -32,11 +50,18 @@ android {
     }
     lintOptions {
         abortOnError false
+        checkReleaseBuilds false
+    }
+    productFlavors {
     }
 }
 
+repositories {
+    maven { url 'https://maven.fabric.io/public' }
+}
+
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jre7:$kotlin_version"
     implementation "com.android.support:appcompat-v7:$android_support_version"
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
@@ -91,4 +116,9 @@ dependencies {
 
     // Omise SDK
     implementation "co.omise:omise-android:$omise_version"
+
+    // Fabric
+    implementation('com.crashlytics.sdk.android:crashlytics:2.6.8@aar') {
+        transitive = true
+    }
 }
