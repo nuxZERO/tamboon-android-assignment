@@ -3,14 +3,12 @@ package com.natthawut.tamboon.ui.donation
 import android.arch.lifecycle.LifecycleFragment
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
-import android.content.Context
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.view.inputmethod.InputMethodManager
-import android.widget.Toast
 import co.omise.android.TokenRequest
 import com.natthawut.tamboon.MainActivity
 import com.natthawut.tamboon.R
@@ -110,11 +108,19 @@ class DonationFragment : LifecycleFragment() {
 
         viewModel?.errorMessageLiveData?.observe(this, Observer { errorMessage ->
             binding.isProcessing = false
-            if (errorMessage != null) {
-                // Show error message
-                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
-            }
+            showErrorMessage(errorMessage)
         })
+    }
+
+    private fun showErrorMessage(message: String?) {
+
+        if (message == null) {
+            return
+        }
+
+        Snackbar.make(binding.donationLayout, message, Snackbar.LENGTH_LONG)
+                .setAction(R.string.dismiss) {}
+                .show()
     }
 
     private fun checkInputValidation(): Boolean {

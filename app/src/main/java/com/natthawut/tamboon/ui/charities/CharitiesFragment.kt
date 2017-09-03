@@ -6,11 +6,11 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.design.widget.Snackbar
 import android.support.v7.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.natthawut.tamboon.MainActivity
 import com.natthawut.tamboon.R
 import com.natthawut.tamboon.databinding.CharitiesFragmentBinding
@@ -51,6 +51,9 @@ class CharitiesFragment : LifecycleFragment() {
 
         viewModel.retrieveCharities()
 
+        // Init data in adapter
+        adapter.charities = viewModel.charitiesLiveData.value
+
         if (adapter.charities == null) {
             binding.isShowProgressBar = true
         }
@@ -60,16 +63,26 @@ class CharitiesFragment : LifecycleFragment() {
 
     private fun subscribeUi() {
         viewModel.charitiesLiveData.observe(this, Observer { charities ->
+            // Update charities list and update UI
             adapter.charities = charities
             binding.isShowProgressBar = false
         })
 
         viewModel.errorMessageLiveData.observe(this, Observer { errorMessage ->
             binding.isShowProgressBar = false
-            if (errorMessage != null) {
-                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
-            }
+            showErrorMessage(errorMessage)
         })
+    }
+
+    private fun showErrorMessage(message: String?) {
+
+        if (message == null) {
+            return
+        }
+
+        Snackbar.make(binding.charitiesLayout, message, Snackbar.LENGTH_LONG)
+                .setAction(R.string.dismiss) {}
+                .show()
     }
 
 }
