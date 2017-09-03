@@ -48,18 +48,10 @@ class DonationFragment : LifecycleFragment() {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.donation_fragment, container, false)
 
-        // TODO: Delete hard code
-        binding.cardNumberInput.setText("4242424242424242")
-        binding.nameOnCardInput.setText("JOHN DOE")
-        binding.expireMonthInput.setText("12")
-        binding.expireYearInput.setText("20")
-        binding.securityCodeInput.setText("123")
-        binding.amountInput.setText("10000")
-
         binding.donateClickListener = object : DonateClickListener {
             override fun onClick() {
 
-                if (!checkInputValidation()) {
+                if (!isValidInputs()) {
                     return
                 }
 
@@ -123,7 +115,7 @@ class DonationFragment : LifecycleFragment() {
                 .show()
     }
 
-    private fun checkInputValidation(): Boolean {
+    private fun isValidInputs(): Boolean {
         mapOf(
                 binding.nameOnCardInput to binding.nameOnCardInputLayout,
                 binding.cardNumberInput to binding.cardNumberInputLayout,
