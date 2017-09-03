@@ -16,7 +16,7 @@ import com.natthawut.tamboon.MainActivity
 import com.natthawut.tamboon.R
 import com.natthawut.tamboon.databinding.CharitiesFragmentBinding
 import com.natthawut.tamboon.injection.AppModules
-import com.natthawut.tamboon.remote.Charity
+import com.natthawut.tamboon.repository.remote.Charity
 import com.natthawut.tamboon.ui.donation.DonationFragment
 
 /**

@@ -1,9 +1,9 @@
 package com.natthawut.tamboon
 
-import com.natthawut.tamboon.remote.ApiRemote
-import com.natthawut.tamboon.remote.Charity
-import com.natthawut.tamboon.remote.Donation
-import com.natthawut.tamboon.remote.DonationResponse
+import com.natthawut.tamboon.repository.remote.ApiRemote
+import com.natthawut.tamboon.repository.remote.Charity
+import com.natthawut.tamboon.repository.remote.Donation
+import com.natthawut.tamboon.repository.remote.DonationResponse
 import io.reactivex.observers.TestObserver
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -44,6 +44,21 @@ class ApiRemoteTest {
         testObserver.assertComplete()
         val actualCharities = testObserver.values()[0]
         Assert.assertEquals(4, actualCharities.size)
+    }
+
+    @Test
+    fun getCharities_500_error() {
+        // Give - Mock 500 status response
+        val mockResponse = MockResponse().setResponseCode(500)
+        mockWebServer.enqueue(mockResponse)
+
+        // When - Retrieve charities
+        val testObserver = TestObserver<List<Charity>>()
+        apiRemote.getCharities().subscribe(testObserver)
+
+        // Then
+        testObserver.assertError(retrofit2.HttpException::class.java)
+        testObserver.assertErrorMessage("Internal server error.")
     }
 
     @Test

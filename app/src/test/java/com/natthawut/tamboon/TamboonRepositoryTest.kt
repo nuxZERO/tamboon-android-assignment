@@ -2,8 +2,8 @@ package com.natthawut.tamboon
 
 import co.omise.android.Client
 import co.omise.android.TokenRequest
-import com.natthawut.tamboon.remote.ApiRemote
-import com.natthawut.tamboon.remote.Charity
+import com.natthawut.tamboon.repository.remote.ApiRemote
+import com.natthawut.tamboon.repository.remote.Charity
 import com.natthawut.tamboon.repository.TamboonRepository
 import io.reactivex.Observable
 import org.junit.Test

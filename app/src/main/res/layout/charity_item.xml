@@ -6,11 +6,11 @@
 
         <variable
             name="charity"
-            type="com.natthawut.tamboon.remote.Charity" />
+            type="com.natthawut.tamboon.repository.remote.Charity" />
 
         <variable
             name="clickListener"
-            type="com.natthawut.tamboon.ui.charities.OnClickListener&lt;com.natthawut.tamboon.remote.Charity&gt;" />
+            type="com.natthawut.tamboon.ui.charities.OnClickListener&lt;com.natthawut.tamboon.repository.remote.Charity&gt;" />
     </data>
 
     <android.support.v7.widget.CardView

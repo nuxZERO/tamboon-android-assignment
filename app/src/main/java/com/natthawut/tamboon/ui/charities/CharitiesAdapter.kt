@@ -6,7 +6,7 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.natthawut.tamboon.R
 import com.natthawut.tamboon.databinding.CharityItemBinding
-import com.natthawut.tamboon.remote.Charity
+import com.natthawut.tamboon.repository.remote.Charity
 
 class CharitiesAdapter(val clickListener: OnClickListener<Charity>) : RecyclerView
 .Adapter<CharitiesAdapter.CharityViewHolder>() {

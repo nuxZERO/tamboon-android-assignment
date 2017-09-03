@@ -1,4 +1,4 @@
-package com.natthawut.tamboon.remote
+package com.natthawut.tamboon.repository.remote
 
 import io.reactivex.Observable
 import retrofit2.http.Body

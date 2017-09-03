@@ -4,10 +4,10 @@ import co.omise.android.Client
 import co.omise.android.TokenRequest
 import co.omise.android.TokenRequestListener
 import co.omise.android.models.Token
-import com.natthawut.tamboon.remote.ApiRemote
-import com.natthawut.tamboon.remote.Charity
-import com.natthawut.tamboon.remote.Donation
-import com.natthawut.tamboon.remote.DonationResponse
+import com.natthawut.tamboon.repository.remote.ApiRemote
+import com.natthawut.tamboon.repository.remote.Charity
+import com.natthawut.tamboon.repository.remote.Donation
+import com.natthawut.tamboon.repository.remote.DonationResponse
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers

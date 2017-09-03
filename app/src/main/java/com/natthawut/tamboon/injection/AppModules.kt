@@ -1,7 +1,7 @@
 package com.natthawut.tamboon.injection
 
 import co.omise.android.Client
-import com.natthawut.tamboon.remote.ApiRemote
+import com.natthawut.tamboon.repository.remote.ApiRemote
 import com.natthawut.tamboon.repository.TamboonRepository
 
 class AppModules {

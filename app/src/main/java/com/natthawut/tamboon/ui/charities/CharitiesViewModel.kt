@@ -2,7 +2,7 @@ package com.natthawut.tamboon.ui.charities
 
 import android.arch.lifecycle.MutableLiveData
 import android.arch.lifecycle.ViewModel
-import com.natthawut.tamboon.remote.Charity
+import com.natthawut.tamboon.repository.remote.Charity
 import com.natthawut.tamboon.repository.TamboonRepository
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
