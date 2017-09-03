@@ -6,7 +6,6 @@ import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.support.v7.widget.GridLayoutManager
 import android.view.LayoutInflater
 import android.view.View
@@ -19,9 +18,6 @@ import com.natthawut.tamboon.injection.AppModules
 import com.natthawut.tamboon.repository.remote.Charity
 import com.natthawut.tamboon.ui.donation.DonationFragment
 
-/**
- * A simple [Fragment] subclass.
- */
 class CharitiesFragment : LifecycleFragment() {
 
     private lateinit var binding: CharitiesFragmentBinding
@@ -70,8 +66,10 @@ class CharitiesFragment : LifecycleFragment() {
 
         viewModel.errorMessageLiveData.observe(this, Observer { errorMessage ->
             binding.isShowProgressBar = false
-            Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+            if (errorMessage != null) {
+                Toast.makeText(context, errorMessage, Toast.LENGTH_SHORT).show()
+            }
         })
     }
 
-}// Required empty public constructor
+}
