@@ -28,7 +28,7 @@ class CharitiesAdapter(val clickListener: OnClickListener<Charity>) : RecyclerVi
         val charityItemBinding = DataBindingUtil.inflate<CharityItemBinding>(
                 LayoutInflater.from(parent?.context), R.layout.charity_item, parent, false)
 
-        charityItemBinding.clickListener = clickListener
+        charityItemBinding.charityItemClickListener = clickListener
 
         return CharityViewHolder(charityItemBinding)
     }

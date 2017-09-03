@@ -8,8 +8,20 @@
         <import type="android.view.View" />
 
         <variable
+            name="isShowErrorWithRetryButton"
+            type="Boolean" />
+
+        <variable
             name="isShowProgressBar"
             type="Boolean" />
+
+        <variable
+            name="errorMessage"
+            type="String" />
+
+        <variable
+            name="retryClickListener"
+            type="com.natthawut.tamboon.ui.charities.RetryClickListener" />
     </data>
 
     <android.support.constraint.ConstraintLayout
@@ -35,6 +47,34 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintVertical_bias="0.5" />
+
+        <TextView
+            android:id="@+id/error_message_text"
+            style="@style/TextAppearance.AppCompat.Medium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="24dp"
+            android:text="@{errorMessage}"
+            android:textColor="@color/gray"
+            android:visibility="@{isShowErrorWithRetryButton ? View.VISIBLE : View.GONE}"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintVertical_bias="0.4"
+            tools:text="Error message" />
+
+        <Button
+            android:id="@+id/retry_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:onClick="@{() -> retryClickListener.onRetryClick()}"
+            android:text="@string/retry"
+            android:visibility="@{isShowErrorWithRetryButton ? View.VISIBLE : View.GONE}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/error_message_text" />
 
     </android.support.constraint.ConstraintLayout>
 

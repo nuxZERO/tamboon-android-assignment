@@ -9,7 +9,7 @@
             type="com.natthawut.tamboon.repository.remote.Charity" />
 
         <variable
-            name="clickListener"
+            name="charityItemClickListener"
             type="com.natthawut.tamboon.ui.charities.OnClickListener&lt;com.natthawut.tamboon.repository.remote.Charity&gt;" />
     </data>
 
@@ -18,7 +18,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="8dp"
         android:foreground="?android:attr/selectableItemBackground"
-        android:onClick="@{() -> clickListener.onClick(charity)}">
+        android:onClick="@{() -> charityItemClickListener.onClick(charity)}">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"

@@ -23,21 +23,32 @@ class CharitiesFragment : LifecycleFragment() {
     private lateinit var binding: CharitiesFragmentBinding
     private lateinit var viewModel: CharitiesViewModel
 
-    private val clickListener = object : OnClickListener<Charity> {
+    private val charityItemClickListener = object : OnClickListener<Charity> {
         override fun onClick(data: Charity) {
             val donationFragment = DonationFragment.newInstance(data.name!!)
             (activity as MainActivity).addBackStackFragment(donationFragment, "Donation")
         }
     }
 
-    private val adapter = CharitiesAdapter(clickListener)
+    private val retryClickListener = object : RetryClickListener {
+        override fun onRetryClick() {
+            retrieveCharities()
+        }
+    }
+
+    private val adapter = CharitiesAdapter(charityItemClickListener)
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
         binding = DataBindingUtil.inflate(inflater, R.layout.charities_fragment, container, false)
+
+        // Set layout manager and adapter to recyclerView
         binding.charityList.layoutManager = GridLayoutManager(context, resources.getInteger(R.integer.charities_column))
         binding.charityList.adapter = adapter
+
+        // Set on retry click listener
+        binding.retryClickListener = retryClickListener
 
         return binding.root
     }
@@ -49,23 +60,31 @@ class CharitiesFragment : LifecycleFragment() {
         viewModel = ViewModelProviders.of(this, factory)
                 .get(CharitiesViewModel::class.java)
 
-        viewModel.retrieveCharities()
-
         // Init data in adapter
         adapter.charities = viewModel.charitiesLiveData.value
+
+        retrieveCharities()
+
+        subscribeUi()
+    }
+
+    private fun retrieveCharities() {
+
+        // Retrieve charities list
+        viewModel.retrieveCharities()
 
         if (adapter.charities == null) {
             binding.isShowProgressBar = true
         }
 
-        subscribeUi()
+        binding.isShowErrorWithRetryButton = false
     }
 
     private fun subscribeUi() {
         viewModel.charitiesLiveData.observe(this, Observer { charities ->
             // Update charities list and update UI
-            adapter.charities = charities
             binding.isShowProgressBar = false
+            adapter.charities = charities
         })
 
         viewModel.errorMessageLiveData.observe(this, Observer { errorMessage ->
@@ -80,9 +99,16 @@ class CharitiesFragment : LifecycleFragment() {
             return
         }
 
-        Snackbar.make(binding.charitiesLayout, message, Snackbar.LENGTH_LONG)
-                .setAction(R.string.dismiss) {}
-                .show()
+        // When charities list showing and get error message then show SnackBar
+        if (adapter.charities != null) {
+            Snackbar.make(binding.charitiesLayout, message, Snackbar.LENGTH_LONG)
+                    .setAction(R.string.dismiss) { retrieveCharities() }
+                    .show()
+            binding.isShowErrorWithRetryButton = false
+        } else {
+            binding.isShowErrorWithRetryButton = true
+            binding.errorMessage = message
+        }
     }
 
 }
